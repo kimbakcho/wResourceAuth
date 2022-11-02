@@ -6,8 +6,8 @@ setup(
     description="와이솔 Oauth2 Python OpenId 인증 모듈",
     author="backho",
     author_email="XXXX@wisol.co.kr",
-    packages=find_packages("ResourceAuth"),
-    requires=[
+    packages=["ResourceAuth"],
+    install_requires =[
         "django",
         "djangorestframework",
         'PyJWT==2.6.0',

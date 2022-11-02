@@ -1,9 +1,9 @@
 import jwt
-from jwt import PyJWKClient, jwks_client
+from jwt import PyJWKClient
 from rest_framework.authentication import BaseAuthentication
 from rest_framework import HTTP_HEADER_ENCODING
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.utils import json
+
 
 from .settings import api_settings
 
