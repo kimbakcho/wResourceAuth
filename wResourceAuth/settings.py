@@ -98,7 +98,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 RESOURCE_AUTH = {
-    "jwk": "http://localhost:8000/o/.well-known/jwks.json"
+    "jwk": "http://10.20.10.114/wOauth2/o/.well-known/jwks.json",
+    "oAuth2TokenUrl": "http://10.20.10.114/wOauth2/o/token/",
+    "clientId": "wisolMain",
+    "clientSecret": "wisolMain"
 }
 
 # Internationalization

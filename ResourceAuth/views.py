@@ -1,0 +1,38 @@
+import requests
+from django.http import HttpRequest
+import jwt
+from jwt import PyJWKClient
+from rest_framework.request import Request
+from rest_framework.response import Response
+
+from .settings import api_settings
+from rest_framework.views import APIView
+
+
+class TokenView(APIView):
+    def post(self, request: Request):
+        res = requests.post(api_settings.oAuth2TokenUrl, {
+            "grant_type": "authorization_code",
+            "client_id": api_settings.clientId,
+            "client_secret": api_settings.clientSecret,
+            "redirect_uri": request.data['redirect_uri'],
+            "scope": request.data['scope'],
+            "state": request.data['state'],
+            "code": request.data['code']
+        }, headers={
+            "Content-Type": "application/x-www-form-urlencoded"
+        })
+        return Response(res.json())
+
+
+class VerifiedView(APIView):
+    jwks_client = PyJWKClient(api_settings.jwk)
+
+    def post(self, request: Request):
+        signing_key = self.jwks_client.get_signing_key_from_jwt(request.data['token'])
+        data = jwt.decode(request.data['token'],
+                          signing_key.key,
+                          verify=True,
+                          algorithms=["RS256"],
+                          options={"verify_exp": True, "verify_aud": False})
+        return Response(data)

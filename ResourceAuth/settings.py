@@ -6,8 +6,12 @@ from rest_framework.settings import APISettings
 USER_SETTINGS = getattr(settings, "RESOURCE_AUTH", None)
 
 DEFAULTS = {
-    "jwk": "http://localhost:8000/o/.well-known/jwks.json"
+    "jwk": "http://10.20.10.114/wOauth2/o/.well-known/jwks.json",
+    "oAuth2TokenUrl": "http://10.20.10.114/wOauth2/o/token/",
+    "clientId": None,
+    "clientSecret": None
 }
 
 api_settings = APISettings(USER_SETTINGS, DEFAULTS)
+
 
