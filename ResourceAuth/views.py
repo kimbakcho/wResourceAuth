@@ -2,6 +2,7 @@ import requests
 from django.http import HttpRequest
 import jwt
 from jwt import PyJWKClient
+from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -11,18 +12,31 @@ from rest_framework.views import APIView
 
 class TokenView(APIView):
     def post(self, request: Request):
-        res = requests.post(api_settings.oAuth2TokenUrl, {
-            "grant_type": "authorization_code",
-            "client_id": api_settings.clientId,
-            "client_secret": api_settings.clientSecret,
-            "redirect_uri": request.data['redirect_uri'],
-            "scope": request.data['scope'],
-            "state": request.data['state'],
-            "code": request.data['code']
-        }, headers={
-            "Content-Type": "application/x-www-form-urlencoded"
-        })
-        return Response(res.json())
+        if request.data['grant_type'] == 'authorization_code':
+            res = requests.post(api_settings.oAuth2TokenUrl, {
+                "grant_type": request.data['grant_type'],
+                "client_id": api_settings.clientId,
+                "client_secret": api_settings.clientSecret,
+                "redirect_uri": request.data['redirect_uri'],
+                "scope": request.data['scope'],
+                "state": request.data['state'],
+                "code": request.data['code']
+            }, headers={
+                "Content-Type": "application/x-www-form-urlencoded"
+            })
+            return Response(res.json())
+        elif request.data['grant_type'] == 'refresh_token':
+            res = requests.post(api_settings.oAuth2TokenUrl, {
+                "grant_type": request.data['grant_type'],
+                "client_id": api_settings.clientId,
+                "client_secret": api_settings.clientSecret,
+                "refresh_token": request.data['refresh_token'],
+            }, headers={
+                "Content-Type": "application/x-www-form-urlencoded"
+            })
+            return Response(res.json())
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class VerifiedView(APIView):

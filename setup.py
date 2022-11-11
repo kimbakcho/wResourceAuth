@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="wResourceAuth",
-    version='0.3.1',
+    version='0.3.2',
     description="와이솔 Oauth2 Python OpenId 인증 모듈",
     author="backho",
     author_email="XXXX@wisol.co.kr",
