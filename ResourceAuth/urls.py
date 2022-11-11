@@ -7,5 +7,5 @@ from ResourceAuth.views import TokenView, VerifiedView
 
 urlpatterns = [
     path('token/', TokenView.as_view()),
-    path('Verified/', VerifiedView.as_view())
+    path('verified/', VerifiedView.as_view())
 ]
