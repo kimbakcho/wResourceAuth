@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "corsheaders",
     'rest_framework',
     'ResourceAuth'
 ]
@@ -44,14 +45,17 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'wResourceAuth.urls'
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {
@@ -100,6 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 RESOURCE_AUTH = {
     "jwk": "http://10.20.10.114/wOauth2/o/.well-known/jwks.json",
     "oAuth2TokenUrl": "http://10.20.10.114/wOauth2/o/token/",
+    'oAuth2RevokeUrl': "http://10.20.10.114/wOauth2/o/revoke_token/",
     "clientId": "wisolMain",
     "clientSecret": "wisolMain"
 }

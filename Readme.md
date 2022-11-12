@@ -11,6 +11,7 @@ REST_FRAMEWORK = {
 RESOURCE_AUTH = {
     "jwk": "http://10.20.10.114/wOauth2/o/.well-known/jwks.json",
     "oAuth2TokenUrl": "http://10.20.10.114/wOauth2/o/token/",
+    'oAuth2RevokeUrl': "http://10.20.10.114/wOauth2/o/revoke_token/",
     "clientId": "wisolMain",
     "clientSecret": "wisolMain"
 }
@@ -37,8 +38,16 @@ curl --location --request POST 'http://localhost:8001/r/token/' \
 
 token POST Verified
 ```
-curl --location --request POST 'http://localhost:8001/r/Verified/' \
+curl --location --request POST 'http://localhost:8001/r/verified/' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'token=eyJ0eXAiOiAiSldU...'
+```
+
+revokeToken POST
+```
+curl --location --request POST 'http://localhost:9000/r/revoke/' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--header 'Cookie: csrftoken=PhCtl3HKHLPdFlg46hYyH6LA6oc8ByEv' \
+--data-urlencode 'token=zlgaQynEFqKJKtnTT9....'
 ```
 

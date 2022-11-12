@@ -30,6 +30,7 @@ class TokenView(APIView):
                 "grant_type": request.data['grant_type'],
                 "client_id": api_settings.clientId,
                 "client_secret": api_settings.clientSecret,
+                "scope": "openid",
                 "refresh_token": request.data['refresh_token'],
             }, headers={
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -50,3 +51,15 @@ class VerifiedView(APIView):
                           algorithms=["RS256"],
                           options={"verify_exp": True, "verify_aud": False})
         return Response(data)
+
+
+class RevokeTokenView(APIView):
+    def post(self, request: Request):
+        res = requests.post(api_settings.oAuth2RevokeUrl, {
+            "token": request.data['token'],
+            "client_id": api_settings.clientId,
+            "client_secret": api_settings.clientSecret,
+        }, headers={
+            "Content-Type": "application/x-www-form-urlencoded"
+        })
+        return Response(status=status.HTTP_200_OK)
