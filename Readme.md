@@ -3,12 +3,25 @@
 
 ## install
 ```
-pip install git+https://github.com/kimbakcho/wResourceAuth.git ``
+pip install git+https://github.com/kimbakcho/wResourceAuth.git 
 //upgrade
-pip install --upgrade git+https://github.com/kimbakcho/wResourceAuth.git ``
+pip install --upgrade git+https://github.com/kimbakcho/wResourceAuth.git
+
+필수 설치 lib 
+corsheaders
+pip install django-cors-headers
 ```
 settings.py
 ```python
+
+INSTALLED_APPS = [
+    ...,
+    "corsheaders",
+    'ResourceAuth'
+]
+#corsheaders 설정
+CORS_ALLOW_ALL_ORIGINS = True
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'ResourceAuth.Authentication.JWTBaseAuthentication',
