@@ -2,3 +2,4 @@
 /dist/
 /wResourceAuth.egg-info/
 /venv/
+.env
