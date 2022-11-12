@@ -1,6 +1,12 @@
 
 # How to Use Lib
 
+## install
+```
+pip install git+https://github.com/kimbakcho/wResourceAuth.git ``
+//upgrade
+pip install --upgrade git+https://github.com/kimbakcho/wResourceAuth.git ``
+```
 settings.py
 ```python
 REST_FRAMEWORK = {
