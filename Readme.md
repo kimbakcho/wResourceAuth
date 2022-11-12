@@ -22,6 +22,14 @@ INSTALLED_APPS = [
 #corsheaders 설정
 CORS_ALLOW_ALL_ORIGINS = True
 
+MIDDLEWARE = [
+    ...,
+    "corsheaders.middleware.CorsMiddleware",
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    ...
+]
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'ResourceAuth.Authentication.JWTBaseAuthentication',
