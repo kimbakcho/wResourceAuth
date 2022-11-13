@@ -10,6 +10,11 @@ from .settings import api_settings
 from rest_framework.views import APIView
 
 
+class TestView(APIView):
+    def post(self,request: Request):
+        response = Response({"test": "test"})
+        print(response.headers)
+        return response
 class TokenView(APIView):
     def post(self, request: Request):
         if request.data['grant_type'] == 'authorization_code':
@@ -24,7 +29,9 @@ class TokenView(APIView):
             }, headers={
                 "Content-Type": "application/x-www-form-urlencoded"
             })
-            return Response(res.json())
+            response = Response(res.json())
+
+            return response
         elif request.data['grant_type'] == 'refresh_token':
             res = requests.post(api_settings.oAuth2TokenUrl, {
                 "grant_type": request.data['grant_type'],

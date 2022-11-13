@@ -11,6 +11,32 @@ pip install --upgrade git+https://github.com/kimbakcho/wResourceAuth.git
 corsheaders
 pip install django-cors-headers
 ```
+---
+### resource 서버
+```python
+INSTALLED_APPS = [
+    ...,
+    "corsheaders",
+    'ResourceAuth'
+]
+#corsheaders 설정
+CORS_ALLOW_ALL_ORIGINS = True
+
+MIDDLEWARE = [
+    ...,
+    "corsheaders.middleware.CorsMiddleware",
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    ...
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'ResourceAuth.Authentication.JWTBaseAuthentication',
+    ]
+}
+```
+---
+### 로그인 서버
 settings.py
 ```python
 
@@ -29,12 +55,6 @@ MIDDLEWARE = [
     ...
 ]
 
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'ResourceAuth.Authentication.JWTBaseAuthentication',
-    ]
-}
 RESOURCE_AUTH = {
     "jwk": "http://10.20.10.114/wOauth2/o/.well-known/jwks.json",
     "oAuth2TokenUrl": "http://10.20.10.114/wOauth2/o/token/",
