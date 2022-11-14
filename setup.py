@@ -9,6 +9,7 @@ setup(
     packages=["ResourceAuth"],
     install_requires =[
         "django",
+        "djangorestframework",
         'PyJWT==2.6.0',
         'cryptography==38.0.3',
         'requests==2.28.1'
