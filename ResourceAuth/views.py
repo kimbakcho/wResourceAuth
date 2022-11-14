@@ -1,7 +1,7 @@
 import requests
 from django.http import HttpRequest
 import jwt
-from django.views.decorators.csrf import csrf_exempt
+
 from jwt import PyJWKClient
 from rest_framework import status
 from rest_framework.request import Request
@@ -10,13 +10,13 @@ from rest_framework.response import Response
 from .settings import api_settings
 from rest_framework.views import APIView
 
-@csrf_exempt
+
 class TestView(APIView):
     def post(self,request: Request):
         response = Response({"test": "test"})
         print(response.headers)
         return response
-@csrf_exempt
+
 class TokenView(APIView):
     def post(self, request: Request):
         if request.data['grant_type'] == 'authorization_code':
@@ -48,7 +48,6 @@ class TokenView(APIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
 class VerifiedView(APIView):
     jwks_client = PyJWKClient(api_settings.jwk)
 
