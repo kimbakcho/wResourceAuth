@@ -1,6 +1,7 @@
 import requests
 from django.http import HttpRequest
 import jwt
+from django.views.decorators.csrf import csrf_exempt
 from jwt import PyJWKClient
 from rest_framework import status
 from rest_framework.request import Request
