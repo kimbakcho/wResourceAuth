@@ -60,7 +60,6 @@ class VerifiedView(APIView):
                           options={"verify_exp": True, "verify_aud": False})
         return Response(data)
 
-@csrf_exempt
 class RevokeTokenView(APIView):
     def post(self, request: Request):
         res = requests.post(api_settings.oAuth2RevokeUrl, {
