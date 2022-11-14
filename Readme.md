@@ -34,6 +34,10 @@ REST_FRAMEWORK = {
         'ResourceAuth.Authentication.JWTBaseAuthentication',
     ]
 }
+
+RESOURCE_AUTH = {
+    "jwk": "http://10.20.10.114/wOauth2/o/.well-known/jwks.json"
+}
 ```
 ---
 ### 로그인 서버
