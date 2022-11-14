@@ -1,71 +1,66 @@
-import requests
-from django.http import HttpRequest
-import jwt
+from urllib.request import Request
 
+import requests
+from django.http import HttpResponse, JsonResponse
+import jwt
+from django.views import View
 
 from jwt import PyJWKClient
-from rest_framework import status
-from rest_framework.request import Request
-from rest_framework.response import Response
-
 from .settings import api_settings
-from rest_framework.views import APIView
 
-class TestView(APIView):
+class TestView(View):
     def post(self,request: Request):
-        response = Response({"test": "test"})
-        print(response.headers)
-        return response
+        return JsonResponse({"test": "test"})
 
-class TokenView(APIView):
+class TokenView(View):
     def post(self, request: Request):
-        if request.data['grant_type'] == 'authorization_code':
+        if request.POST['grant_type'] == 'authorization_code':
             res = requests.post(api_settings.oAuth2TokenUrl, {
-                "grant_type": request.data['grant_type'],
+                "grant_type": request.POST['grant_type'],
                 "client_id": api_settings.clientId,
                 "client_secret": api_settings.clientSecret,
-                "redirect_uri": request.data['redirect_uri'],
-                "scope": request.data['scope'],
-                "state": request.data['state'],
-                "code": request.data['code']
+                "redirect_uri": request.POST['redirect_uri'],
+                "scope": request.POST['scope'],
+                "state": request.POST['state'],
+                "code": request.POST['code']
             }, headers={
                 "Content-Type": "application/x-www-form-urlencoded"
             })
-            response = Response(res.json())
 
-            return response
-        elif request.data['grant_type'] == 'refresh_token':
+            return JsonResponse(res.json())
+        elif request.POST['grant_type'] == 'refresh_token':
             res = requests.post(api_settings.oAuth2TokenUrl, {
-                "grant_type": request.data['grant_type'],
+                "grant_type": request.POST['grant_type'],
                 "client_id": api_settings.clientId,
                 "client_secret": api_settings.clientSecret,
                 "scope": "openid",
-                "refresh_token": request.data['refresh_token'],
+                "refresh_token": request.POST['refresh_token'],
             }, headers={
                 "Content-Type": "application/x-www-form-urlencoded"
             })
-            return Response(res.json())
+            return JsonResponse(res.json())
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return HttpResponse(status=400)
 
-class VerifiedView(APIView):
+class VerifiedView(View):
     jwks_client = PyJWKClient(api_settings.jwk)
 
     def post(self, request: Request):
-        signing_key = self.jwks_client.get_signing_key_from_jwt(request.data['token'])
-        data = jwt.decode(request.data['token'],
+        signing_key = self.jwks_client.get_signing_key_from_jwt(request.POST['token'])
+        data = jwt.decode(request.POST['token'],
                           signing_key.key,
                           verify=True,
                           algorithms=["RS256"],
                           options={"verify_exp": True, "verify_aud": False})
-        return Response(data)
-class RevokeTokenView(APIView):
+        return JsonResponse(data)
+
+class RevokeTokenView(View):
     def post(self, request: Request):
         res = requests.post(api_settings.oAuth2RevokeUrl, {
-            "token": request.data['token'],
+            "token": request.POST['token'],
             "client_id": api_settings.clientId,
             "client_secret": api_settings.clientSecret,
         }, headers={
             "Content-Type": "application/x-www-form-urlencoded"
         })
-        return Response(status=status.HTTP_200_OK)
+        return HttpResponse(status=200)
