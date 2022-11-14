@@ -1,4 +1,3 @@
-from urllib.request import Request
 
 import requests
 from django.http import HttpResponse, JsonResponse
@@ -6,14 +5,16 @@ import jwt
 from django.views import View
 
 from jwt import PyJWKClient
+
+
 from .settings import api_settings
 
 class TestView(View):
-    def post(self,request: Request):
+    def post(self,request):
         return JsonResponse({"test": "test"})
 
 class TokenView(View):
-    def post(self, request: Request):
+    def post(self, request):
         if request.POST['grant_type'] == 'authorization_code':
             res = requests.post(api_settings.oAuth2TokenUrl, {
                 "grant_type": request.POST['grant_type'],
@@ -45,7 +46,7 @@ class TokenView(View):
 class VerifiedView(View):
     jwks_client = PyJWKClient(api_settings.jwk)
 
-    def post(self, request: Request):
+    def post(self, request):
         signing_key = self.jwks_client.get_signing_key_from_jwt(request.POST['token'])
         data = jwt.decode(request.POST['token'],
                           signing_key.key,
@@ -55,7 +56,7 @@ class VerifiedView(View):
         return JsonResponse(data)
 
 class RevokeTokenView(View):
-    def post(self, request: Request):
+    def post(self, request):
         res = requests.post(api_settings.oAuth2RevokeUrl, {
             "token": request.POST['token'],
             "client_id": api_settings.clientId,
