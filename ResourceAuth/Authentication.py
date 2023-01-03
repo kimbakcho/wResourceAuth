@@ -46,7 +46,7 @@ class JWTBaseAuthentication(BaseAuthentication):
         data = jwt.decode(raw_token,
                           signing_key.key,
                           algorithms=["RS256"],
-                          options={"verify_exp": True, "verify_aud": False})
+                          options={"verify_exp": True, "verify_aud": False, "verify_iat": False})
         return data
 
     def get_header(self, request):
