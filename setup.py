@@ -12,6 +12,6 @@ setup(
         "djangorestframework",
         'PyJWT==2.6.0',
         'cryptography==38.0.3',
-        'requests==2.28.1'
+        'requests==2.32.1'
     ],
 )
